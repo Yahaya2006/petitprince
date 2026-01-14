@@ -39,7 +39,7 @@
     <button id="nextBtn">Continuer</button>
 
     <div id="secret" class="secret"></div>
-    <div id="endingLine" class="ending-line" ></div>
+    <div id="endingLine" class="ending-line"></div>
   </div>
 
   <div id="clock" class="clock"></div>
@@ -51,30 +51,23 @@
     <div id="twinkles" class="twinkles"></div>
   </div>
 
-  <script src="script/script.js"></script>
-
-  
   <!-- Écran de mot de passe (overlay) -->
   <div id="gate" class="gate" aria-modal="true" role="dialog" aria-labelledby="gateTitle">
     <div class="gate-card">
-      <h2 id="gateTitle">Accès protégé</h2>
-      <p class="gate-sub">Entre le mot de passe pour continuer</p>
+      <h2 id="gateTitle">Accès protégé, Interdit aux visiteurs</h2>
+      <p class="gate-sub">Entre le mot de passe pour continuer, si tu es Christopher 🐣🤴💛</p>
 
       <form id="gateForm" class="gate-form" autocomplete="off">
-        <input
-          id="gateInput"
-          class="gate-input"
-          type="password"
-          placeholder="Mot de passe"
-          aria-label="Mot de passe"
-          required
-        />
+        <input id="gateInput" class="gate-input" type="password" placeholder="Mot de passe" aria-label="Mot de passe"
+          required />
         <button class="gate-btn" type="submit">Entrer</button>
       </form>
 
       <p id="gateError" class="gate-error" aria-live="polite" role="status"></p>
     </div>
   </div>
+
+  <script src="script/script.js"></script>
 
 </body>
 

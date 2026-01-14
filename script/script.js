@@ -16,60 +16,59 @@ const persistentEnding = "Toujours, je te choisis. 🤍";
 
 
 /* ========== Gate (mot de passe) ========== */
-(function setupGate(){
-  // ⚠️ Met ton mot de passe ICI :
-  const PASSWORD = "poussin2026";   // ← remplace par le tien
+(function setupGate() {
+    // ⚠️ Met ton mot de passe ICI :
+    const PASSWORD = "poussin2026";   // ← remplace par le tien
 
-  const gate = document.getElementById("gate");
-  const form = document.getElementById("gateForm");
-  const input = document.getElementById("gateInput");
-  const error = document.getElementById("gateError");
-  const music = document.getElementById("bgMusic");
+    const gate = document.getElementById("gate");
+    const form = document.getElementById("gateForm");
+    const input = document.getElementById("gateInput");
+    const error = document.getElementById("gateError");
 
-  if (!gate || !form || !input || !error || !music) return;
+    if (!gate || !form || !input || !error || !music) return;
 
-  // Si déjà déverrouillé cette session, saute la gate
-  if (sessionStorage.getItem("unlocked") === "1") {
-    document.body.classList.add("unlocked");
-    // On ne lance pas auto la musique ici (certaines politiques d'autoplay la bloqueraient)
-  } else {
-    // Focus auto sur le champ à l'ouverture
-    setTimeout(() => input.focus(), 200);
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const val = (input.value || "").trim();
-
-    if (!val) {
-      error.textContent = "Entre le mot de passe.";
-      input.focus();
-      return;
-    }
-
-    if (val === PASSWORD) {
-      // Déverrouille
-      document.body.classList.add("unlocked");
-      sessionStorage.setItem("unlocked", "1");
-      error.textContent = "";
-
-      // Lance la musique immédiatement (déclenchement via geste utilisateur)
-      try { await music.play(); } catch {}
-
-      // Nettoyage du champ (au cas où)
-      input.value = "";
+    // Si déjà déverrouillé cette session, saute la gate
+    if (sessionStorage.getItem("unlocked") === "1") {
+        document.body.classList.add("unlocked");
+        // On ne lance pas auto la musique ici (certaines politiques d'autoplay la bloqueraient)
     } else {
-      error.textContent = "Mot de passe incorrect.";
-      input.select();
+        // Focus auto sur le champ à l'ouverture
+        setTimeout(() => input.focus(), 200);
     }
-  });
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const val = (input.value || "").trim();
+
+        if (!val) {
+            error.textContent = "Entre le mot de passe.";
+            input.focus();
+            return;
+        }
+
+        if (val === PASSWORD) {
+            // Déverrouille
+            document.body.classList.add("unlocked");
+            sessionStorage.setItem("unlocked", "1");
+            error.textContent = "";
+
+            // Lance la musique immédiatement (déclenchement via geste utilisateur)
+            try { await music.play(); } catch { }
+
+            // Nettoyage du champ (au cas où)
+            input.value = "";
+        } else {
+            error.textContent = "Mot de passe incorrect.";
+            input.select();
+        }
+    });
 })();
 
 
 
 /* === Contenus === */
 const introTexts = [
-    "Poussin, j’ai du mal à dormir ces temps-ci.",
+    "Poussin, j’ai du mal à dormir ces temps-ci. Je te jure j'essaie 😅",
     "Au lieu de regarder passivement le plafond,",
     "j’ai décidé de faire l’une des choses que je sais bien faire : coder.",
     "Juste pour te rappeler à quel point je t’aime, mon amour,",
@@ -77,21 +76,21 @@ const introTexts = [
 ];
 
 const finalTexts = [
-    "Si l’amour avait une adresse…",
-    "elle commencerait par ton prénom.",
-    "Ce site n’est pas un cadeau.",
-    "C’est un battement de mon cœur.",
-    "Chaque jour à tes côtés est une évidence.",
+    "à la base, je ne crois pas aux contes de fées…",
+    "mais avec toi, tout semble possible.",
+    "tu me manques aussi, on doit se voir ce vendredi !",
+    "je pense à toi tout le temps.",
+    "bisous làbas  😘",
     "Je t’aime 🤍"
 ];
 
-const videoCaption = "Ferme les yeux, écoute… Je suis là, avec toi 🤍";
+const videoCaption = "L'homme qui va faire le ménage, la cuisine, la vaiselle... 😂";
 
 const images = Array.from({ length: 12 }, (_, i) => `christopher/image${i + 1}.jpeg`);
 const imageCaptions = [
     "tu fais genre t'aimes pas les photos — moi j'aime etre avec toi 📸",
     "mate le charisme 😂 — Je souris en te revoyant mon poussin.",
-    "j'aime ta tendresse avec moi 🤍 ",
+    "j'aime ta tendresse envers moi 🤍 ",
     "Je n’oublie rien.",
     "Merci d’exister.",
     "Tes yeux, mon ciel.",
@@ -99,7 +98,7 @@ const imageCaptions = [
     "Tu es mon évidence.",
     "Mon âme te reconnaît.",
     "Ensemble, toujours.",
-    "Tout simplement toi.",
+    "Tout simplement toi. Moi meme je vais te demander en mariage un jour.",
     "Je t’aime, infiniment."
 ];
 
@@ -346,9 +345,9 @@ btn.addEventListener("click", async () => {
             showText(finalTexts[step++], { fantasy: true });
         } else {
             // Afficher la phrase finale persistante
-            const endingEl = document.getElementById("endingLine");
-            endingEl.textContent = "Et même dans le silence, mon cœur reste auprès du tien. 🤍";
-            endingEl.classList.add("show");
+            hide(text);
+            endingLine.textContent = persistentEnding;
+            endingLine.classList.add("show");
 
             btn.style.display = "none";
             startMelancholicBouquet();
@@ -381,11 +380,23 @@ function startMelancholicBouquet() {
     bouquet.classList.add("show");
     spawnTwinkles(42);
     startEmbers(18000);
-    setTimeout(() => typeSecret(secretMessage, 28), 1200);
 
-    // 🔽 AJOUTE CES 2 LIGNES :
-    endingLine.textContent = "Et même dans le silence, mon cœur reste auprès du tien. 🤍";
+
+    // Afficher IMMÉDIATEMENT la phrase finale
+    endingLine.textContent = persistentEnding;
+    endingLine.style.display = "block";
+    endingLine.style.opacity = "1";
+    endingLine.style.visibility = "visible";
     endingLine.classList.add("show");
+
+    // Afficher le secret tapé après 1.2s
+    setTimeout(() => {
+        typeSecret(secretMessage, 28);
+        secret.style.display = "block";
+        secret.style.opacity = "1";
+        secret.style.visibility = "visible";
+        secret.classList.add("show");
+    }, 1200);
 
     // respiration lente du fond (nostalgie)
     const stars = document.querySelector(".stars");

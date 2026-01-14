@@ -26,8 +26,9 @@
 
 
 /* Quand déverrouillé, on cache la gate */
-body.unlocked .gate { 
-  display: none !important;  /* ← ajoute !important pour écraser tout */
+body.unlocked .gate {
+  display: none !important;
+  /* ← ajoute !important pour écraser tout */
 }
 
 
@@ -96,13 +97,13 @@ body::before {
 /* Conteneur */
 .container {
   position: relative;
-  z-index: 2;
+  z-index: 2000;
   width: min(100%, var(--maxw));
   margin-inline: auto;
   text-align: center;
   padding: 16px;
   padding-top: calc(var(--pad-page-top) + env(safe-area-inset-top, 0px));
-    padding-bottom: calc(var(--pad-page-bottom) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(var(--pad-page-bottom) + env(safe-area-inset-bottom, 0px));
 }
 
 /* ===== Intro: montées d’étoiles bien visibles, tous côtés ===== */
@@ -267,20 +268,20 @@ button#nextBtn {
   touch-action: manipulation;
 
   /* look premium sombre + argent */
-  color: #E5E4E2; /* argent doux */
-  background: linear-gradient(
-      180deg,
-      rgba(22,22,22,0.9),
-      rgba(10,10,10,0.92)
-    );
-  border: 1px solid rgba(229,228,226,0.65); /* #E5E4E2 */
+  color: #E5E4E2;
+  /* argent doux */
+  background: linear-gradient(180deg,
+      rgba(22, 22, 22, 0.9),
+      rgba(10, 10, 10, 0.92));
+  border: 1px solid rgba(229, 228, 226, 0.65);
+  /* #E5E4E2 */
   border-radius: 14px;
 
   /* glow + verre léger */
   box-shadow:
-    0 0 12px rgba(229,228,226,0.22),
-    0 6px 24px rgba(0,0,0,0.55),
-    inset 0 0 10px rgba(255,255,255,0.05);
+    0 0 12px rgba(229, 228, 226, 0.22),
+    0 6px 24px rgba(0, 0, 0, 0.55),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(2px);
 
   /* animations + interactions */
@@ -297,17 +298,16 @@ button#nextBtn {
 button#nextBtn::before {
   content: "";
   position: absolute;
-  inset: -40% -150% auto -150%; /* grande bande inclinée */
+  inset: -40% -150% auto -150%;
+  /* grande bande inclinée */
   height: 200%;
   transform: rotate(20deg);
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.06) 45%,
-    rgba(243,230,197,0.10) 50%,
-    rgba(255,255,255,0.06) 55%,
-    rgba(255,255,255,0) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.06) 45%,
+      rgba(243, 230, 197, 0.10) 50%,
+      rgba(255, 255, 255, 0.06) 55%,
+      rgba(255, 255, 255, 0) 100%);
   animation: btnShimmer 5.5s linear infinite;
   pointer-events: none;
 }
@@ -317,13 +317,11 @@ button#nextBtn::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at var(--rx, 50%) var(--ry, 50%),
-    rgba(229,228,226,0.20) 0%,
-    rgba(229,228,226,0.12) 25%,
-    rgba(229,228,226,0.05) 45%,
-    rgba(229,228,226,0) 60%
-  );
+  background: radial-gradient(circle at var(--rx, 50%) var(--ry, 50%),
+      rgba(229, 228, 226, 0.20) 0%,
+      rgba(229, 228, 226, 0.12) 25%,
+      rgba(229, 228, 226, 0.05) 45%,
+      rgba(229, 228, 226, 0) 60%);
   opacity: 0;
   transform: scale(0.6);
   transition: opacity .35s ease, transform .35s ease;
@@ -331,18 +329,19 @@ button#nextBtn::after {
 
 /* Hover: léger éclaircissement + glow */
 button#nextBtn:hover {
-  background: linear-gradient(180deg, rgba(26,26,26,0.95), rgba(12,12,12,0.95));
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.95), rgba(12, 12, 12, 0.95));
   color: #ffffff;
   box-shadow:
-    0 0 16px rgba(229,228,226,0.32),
-    0 10px 34px rgba(0,0,0,0.6),
-    inset 0 0 14px rgba(255,255,255,0.07);
+    0 0 16px rgba(229, 228, 226, 0.32),
+    0 10px 34px rgba(0, 0, 0, 0.6),
+    inset 0 0 14px rgba(255, 255, 255, 0.07);
 }
 
 /* Active: petit enfoncement + ripple visible */
 button#nextBtn:active {
   transform: translateY(1px) scale(0.995);
 }
+
 button#nextBtn:active::after {
   opacity: 1;
   transform: scale(1);
@@ -355,31 +354,46 @@ button#nextBtn {
 
 /* Keyframes */
 @keyframes btnShimmer {
-  0%   { transform: translateX(-15%) rotate(20deg); }
-  100% { transform: translateX(15%)  rotate(20deg); }
+  0% {
+    transform: translateX(-15%) rotate(20deg);
+  }
+
+  100% {
+    transform: translateX(15%) rotate(20deg);
+  }
 }
 
 @keyframes btnBreath {
-  0%   { box-shadow:
-           0 0 10px rgba(229,228,226,0.18),
-           0 6px 22px rgba(0,0,0,0.5),
-           inset 0 0 8px rgba(255,255,255,0.04); }
-  50%  { box-shadow:
-           0 0 16px rgba(229,228,226,0.28),
-           0 10px 30px rgba(0,0,0,0.6),
-           inset 0 0 12px rgba(255,255,255,0.06); }
-  100% { box-shadow:
-           0 0 10px rgba(229,228,226,0.18),
-           0 6px 22px rgba(0,0,0,0.5),
-           inset 0 0 8px rgba(255,255,255,0.04); }
+  0% {
+    box-shadow:
+      0 0 10px rgba(229, 228, 226, 0.18),
+      0 6px 22px rgba(0, 0, 0, 0.5),
+      inset 0 0 8px rgba(255, 255, 255, 0.04);
+  }
+
+  50% {
+    box-shadow:
+      0 0 16px rgba(229, 228, 226, 0.28),
+      0 10px 30px rgba(0, 0, 0, 0.6),
+      inset 0 0 12px rgba(255, 255, 255, 0.06);
+  }
+
+  100% {
+    box-shadow:
+      0 0 10px rgba(229, 228, 226, 0.18),
+      0 6px 22px rgba(0, 0, 0, 0.5),
+      inset 0 0 8px rgba(255, 255, 255, 0.04);
+  }
 }
 
 /* Accessibilité : réduire les animations si l'utilisateur l'a demandé */
 @media (prefers-reduced-motion: reduce) {
+
   button#nextBtn,
   button#nextBtn::before {
     animation: none !important;
   }
+
   button#nextBtn {
     transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .08s ease;
   }
@@ -388,20 +402,19 @@ button#nextBtn {
 
 /* ===== Cadre média arrondi et centré ===== */
 .media-frame {
-    display: none;
-  padding: 12px;
-  border-radius: calc(var(--radius) + 6px);
-  background: rgba(255, 255, 255, 0.04);
+  display: none;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 0;
+  margin: 20px auto;
+  background: #000;
   border: 1px solid rgba(243, 230, 197, 0.25);
   box-shadow:
     0 0 24px rgba(243, 230, 197, 0.15),
     0 12px 40px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px);
-  width: 300px;
-  height: 500px;
-  margin-left: 10px;
-  margin-top: 0;
-
 }
 
 .media-frame.show {
@@ -411,14 +424,17 @@ button#nextBtn {
 
 /* Médias */
 .media {
-  display: none;
   width: 100%;
-  border-radius: var(--radius);
+  height: 100%;
+  border-radius: 0;
   background: #0b0b0b;
   overflow: hidden;
   opacity: 0;
   transform: translateY(6px) scale(0.995);
   transition: opacity 0.35s ease, transform 0.35s ease;
+  object-fit: cover;
+  object-position: center;
+  display: none;
 }
 
 .media.show {
@@ -441,8 +457,8 @@ video.media {
   aspect-ratio: 3 / 4;
   /* mets 4/3 ou 16/9 si tes photos sont horizontales */
   background: #0b0b0b;
-  height: 400px;
-  border-radius: var(--radius);
+  height: 100%;
+  border-radius: 0;
 }
 
 /* Légende lumineuse sous média */
@@ -463,13 +479,20 @@ video.media {
   margin-top: 28px;
   font-size: clamp(1rem, 2.2vw, 1.25rem);
   color: var(--accent2);
-  opacity: 0;
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
   transition: opacity 0.9s ease;
   white-space: pre-line;
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
 }
 
 .secret.show {
-  opacity: 1;
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 /* Horloge */
@@ -650,7 +673,9 @@ video.media {
   margin-top: 22px;
   font-size: clamp(1.05rem, 2.4vw, 1.35rem);
   color: #ffffff;
-  opacity: 0;
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
   text-shadow:
     0 0 10px rgba(255, 255, 255, 0.60),
     0 0 24px rgba(243, 230, 197, 0.35),
@@ -659,7 +684,8 @@ video.media {
   transition: opacity 800ms ease;
   white-space: pre-line;
   position: relative;
-  z-index: 1100;
+  z-index: 9999;
+  pointer-events: auto;
 }
 
 
@@ -683,38 +709,48 @@ video.media {
 }
 
 .ending-line.show {
-  opacity: 1;
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 /* Quand le cadre media est affiché, rapproche du haut */
 .container:has(.media-frame.show) {
-  padding-top: clamp(8px, 3vh, 24px);
+  padding-top: clamp(12px, 4vh, 30px);
 }
 
 /* Et même un peu plus quand la vidéo ou l'image est visible */
 .container:has(.media.show) {
-  padding-top: clamp(8px, 2.5vh, 20px);
+  padding-top: clamp(12px, 4vh, 30px);
 }
 
 
 /* Le cadre qui contient l'image ou la vidéo */
 .media-frame {
   width: 100%;
-  aspect-ratio: 4 / 5;      /* choisis la forme du cadre ici */
+  max-width: 100%;
+  aspect-ratio: 4 / 5;
+  /* choisis la forme du cadre ici */
   overflow: hidden;
-  border-radius: 20px;      /* arrondi du cadre */
+  border-radius: 20px;
+  /* arrondi du cadre */
   margin: 20px auto;
-  display: none;            /* affiché en .show dans ton JS */
-  background: #000;         /* évite les trous noirs */
+  display: none;
+  /* affiché en .show dans ton JS */
+  background: #000;
+  /* évite les trous noirs */
 }
 
 /* Images & vidéos qui remplissent tout le cadre */
 .media {
   width: 100%;
   height: 100%;
-  object-fit: cover;        /* remplit TOUT l'espace */
-  object-position: center;  /* toujours centré */
-  border-radius: 20px;      /* arrondi interne (peut être égal au cadre) */
+  object-fit: cover;
+  /* remplit TOUT l'espace */
+  object-position: center;
+  /* toujours centré */
+  border-radius: 0;
+  /* sans arrondi interne (hérité du cadre) */
   display: none;
 }
 
@@ -728,25 +764,27 @@ video.media {
 .gate {
   position: fixed;
   inset: 0;
-  z-index: 2000;                  /* au-dessus de tout */
+  z-index: 2000;
+  /* au-dessus de tout */
   display: grid;
   place-items: center;
   background:
-    radial-gradient(ellipse at center, rgba(0,0,0,0.65), rgba(0,0,0,0.9)),
+    radial-gradient(ellipse at center, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.9)),
     #000;
   backdrop-filter: blur(2px);
 }
 
 .gate-card {
   width: min(92vw, 420px);
-  padding: 22px 18px;
+  padding: clamp(18px, 5vw, 28px);
   border-radius: 14px;
-  border: 1px solid rgba(243,230,197,0.28); /* champagne doux */
-  background: rgba(20,20,20,0.88);
+  border: 1px solid rgba(243, 230, 197, 0.28);
+  background: rgba(20, 20, 20, 0.88);
   box-shadow:
-    0 0 28px rgba(243,230,197,0.18),
-    0 20px 50px rgba(0,0,0,0.6);
+    0 0 28px rgba(243, 230, 197, 0.18),
+    0 20px 50px rgba(0, 0, 0, 0.6);
   text-align: center;
+  margin: 20px;
 }
 
 .gate-card h2 {
@@ -765,39 +803,52 @@ video.media {
 .gate-form {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 10px;
+  gap: clamp(8px, 2vw, 12px);
 }
 
 .gate-input {
-  padding: 12px 14px;
+  padding: clamp(10px, 2.5vh, 14px) clamp(12px, 3vw, 16px);
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   background: #0f0f0f;
   color: #fff;
   outline: none;
+  font-size: 16px;
+  -webkit-appearance: none;
 }
+
 .gate-input:focus {
   border-color: #f3e6c5;
-  box-shadow: 0 0 0 3px rgba(243,230,197,0.15);
+  box-shadow: 0 0 0 3px rgba(243, 230, 197, 0.15);
 }
 
 .gate-btn {
-  padding: 12px 16px;
+  padding: clamp(10px, 2.5vh, 14px) clamp(14px, 4vw, 18px);
   border-radius: 10px;
   border: 1px solid #fff;
   background: transparent;
   color: #fff;
   cursor: pointer;
   transition: background .2s ease, color .2s ease;
+  font-size: 16px;
+  -webkit-appearance: none;
+  min-height: 44px;
 }
-.gate-btn:hover { background: #fff; color: #000; }
+
+.gate-btn:hover {
+  background: #fff;
+  color: #000;
+}
 
 .gate-error {
-  min-height: 18px; /* réserve la place */
+  min-height: 18px;
+  /* réserve la place */
   margin-top: 10px;
   color: #ffb3b3;
   font-size: 0.95rem;
 }
 
 /* Quand déverrouillé, on cache la gate */
-body.unlocked .gate { display: none; }
+body.unlocked .gate {
+  display: none;
+}
