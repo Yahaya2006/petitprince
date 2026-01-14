@@ -15,6 +15,57 @@ const endingLine = document.getElementById("endingLine");
 const persistentEnding = "Toujours, je te choisis. 🤍";
 
 
+/* ========== Gate (mot de passe) ========== */
+(function setupGate(){
+  // ⚠️ Met ton mot de passe ICI :
+  const PASSWORD = "poussin2026";   // ← remplace par le tien
+
+  const gate = document.getElementById("gate");
+  const form = document.getElementById("gateForm");
+  const input = document.getElementById("gateInput");
+  const error = document.getElementById("gateError");
+  const music = document.getElementById("bgMusic");
+
+  if (!gate || !form || !input || !error || !music) return;
+
+  // Si déjà déverrouillé cette session, saute la gate
+  if (sessionStorage.getItem("unlocked") === "1") {
+    document.body.classList.add("unlocked");
+    // On ne lance pas auto la musique ici (certaines politiques d'autoplay la bloqueraient)
+  } else {
+    // Focus auto sur le champ à l'ouverture
+    setTimeout(() => input.focus(), 200);
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const val = (input.value || "").trim();
+
+    if (!val) {
+      error.textContent = "Entre le mot de passe.";
+      input.focus();
+      return;
+    }
+
+    if (val === PASSWORD) {
+      // Déverrouille
+      document.body.classList.add("unlocked");
+      sessionStorage.setItem("unlocked", "1");
+      error.textContent = "";
+
+      // Lance la musique immédiatement (déclenchement via geste utilisateur)
+      try { await music.play(); } catch {}
+
+      // Nettoyage du champ (au cas où)
+      input.value = "";
+    } else {
+      error.textContent = "Mot de passe incorrect.";
+      input.select();
+    }
+  });
+})();
+
+
 
 /* === Contenus === */
 const introTexts = [
@@ -38,18 +89,18 @@ const videoCaption = "Ferme les yeux, écoute… Je suis là, avec toi 🤍";
 
 const images = Array.from({ length: 12 }, (_, i) => `christopher/image${i + 1}.jpeg`);
 const imageCaptions = [
-    "Souvenir 1/12 — Mon cœur va vers toi.",
-    "Souvenir 2/12 — Je souris en te revoyant.",
-    "Souvenir 3/12 — Tu es ma douceur.",
-    "Souvenir 4/12 — Je n’oublie rien.",
-    "Souvenir 5/12 — Merci d’exister.",
-    "Souvenir 6/12 — Tes yeux, mon ciel.",
-    "Souvenir 7/12 — Chaque instant compte.",
-    "Souvenir 8/12 — Tu es mon évidence.",
-    "Souvenir 9/12 — Mon âme te reconnaît.",
-    "Souvenir 10/12 — Ensemble, toujours.",
-    "Souvenir 11/12 — Tout simplement toi.",
-    "Souvenir 12/12 — Je t’aime, infiniment."
+    "tu fais genre t'aimes pas les photos — moi j'aime etre avec toi 📸",
+    "mate le charisme 😂 — Je souris en te revoyant mon poussin.",
+    "j'aime ta tendresse avec moi 🤍 ",
+    "Je n’oublie rien.",
+    "Merci d’exister.",
+    "Tes yeux, mon ciel.",
+    "Chaque instant compte.",
+    "Tu es mon évidence.",
+    "Mon âme te reconnaît.",
+    "Ensemble, toujours.",
+    "Tout simplement toi.",
+    "Je t’aime, infiniment."
 ];
 
 const secretMessage =
