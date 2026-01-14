@@ -18,7 +18,7 @@ const persistentEnding = "Toujours, je te choisis. 🤍";
 /* ========== Gate (mot de passe) ========== */
 (function setupGate() {
     // ⚠️ Met ton mot de passe ICI :
-    const PASSWORD = "poussin2026";   // ← remplace par le tien
+    const PASSWORD = "DIA,dia.1";   // ← remplace par le tien
 
     const gate = document.getElementById("gate");
     const form = document.getElementById("gateForm");
