@@ -1,0 +1,563 @@
+/* ===== Reset & variables ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --fg: #ffffff;
+  --bg: #000000;
+  --accent: #f3e6c5;
+  /* champagne doux */
+  --accent2: #cfc7b0;
+  /* ivoire/gris chaud */
+  --maxw: 700px;
+
+  --font-base: clamp(15px, 1.8vw, 18px);
+  --font-text: clamp(1.05rem, 2.4vw, 1.6rem);
+  --font-caption: clamp(0.98rem, 2.1vw, 1.2rem);
+  --font-btn: clamp(1rem, 2.2vw, 1.1rem);
+
+  --radius: 16px;
+  --pad-page-top: clamp(40px, 10vh, 120px);
+  --pad-page-bottom: clamp(72px, 16vh, 160px);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: var(--font-base);
+  line-height: 1.6;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Halo respiration discret */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.9));
+  animation: breathe 12s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes breathe {
+  0% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.65;
+  }
+
+  100% {
+    opacity: 0.35;
+  }
+}
+
+/* Fond étoiles global */
+.stars {
+  position: fixed;
+  inset: 0;
+  background: url("https://raw.githubusercontent.com/JulianLaval/canvas-particle-network/master/img/starfield.png") center / cover repeat-y;
+  animation: starsMove 60s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+}
+
+@keyframes starsMove {
+  from {
+    background-position: 50% 0;
+  }
+
+  to {
+    background-position: 50% -2000px;
+  }
+}
+
+/* Conteneur */
+.container {
+  position: relative;
+  z-index: 2;
+  width: min(100%, var(--maxw));
+  margin-inline: auto;
+  text-align: center;
+  padding: 16px;
+  padding-top: calc(var(--pad-page-top) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--pad-page-bottom) + env(safe-area-inset-bottom, 0px));
+  margin-top: 120px;
+}
+
+/* ===== Intro: montées d’étoiles bien visibles, tous côtés ===== */
+.intro-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  /* derrière le texte */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.tiny-star {
+  position: absolute;
+  color: var(--accent);
+  opacity: 0;
+  filter: drop-shadow(0 0 8px rgba(243, 230, 197, 0.65));
+  /* taille / durée / délai sont posés en inline-style via JS */
+}
+
+/* 4 directions pour un effet “de tous les côtés” */
+@keyframes riseUp {
+
+  /* bas -> haut */
+  0% {
+    transform: translateY(0) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-120vh) scale(1.06) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flyRightUp {
+
+  /* gauche -> haut‑droite */
+  0% {
+    transform: translate(0, 0) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(120vw, -120vh) scale(1.05) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flyLeftUp {
+
+  /* droite -> haut‑gauche */
+  0% {
+    transform: translate(0, 0) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-120vw, -120vh) scale(1.05) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flyDiagUp {
+
+  /* diagonales depuis bas‑côtés */
+  0% {
+    transform: translate(0, 0) scale(0.9) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(60vw, -120vh) scale(1.05) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ===== Texte (intro + final) ===== */
+.text {
+  font-size: var(--font-text);
+  line-height: 1.75;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+}
+
+.text.show {
+  opacity: 1;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.015);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Apparition “fantastique” (final) : shimmer + glow doux */
+.text.fantasy {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(243, 230, 197, 0.9), rgba(255, 255, 255, 0.6));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 14px rgba(243, 230, 197, 0.25);
+  animation: shine 5.5s linear infinite, pulse 6s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Bouton (tap target ≥ 44px) */
+button#nextBtn {
+  margin-top: 24px;
+  padding: clamp(12px, 2.8vh, 14px) clamp(24px, 6vw, 32px);
+  min-height: 44px;
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--fg);
+  font-size: var(--font-btn);
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.08s ease;
+  touch-action: manipulation;
+}
+
+button#nextBtn:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+button#nextBtn:active {
+  transform: translateY(1px);
+}
+
+/* ===== Cadre média arrondi et centré ===== */
+.media-frame {
+  display: none;
+  margin-top: 22px;
+  padding: 12px;
+  border-radius: calc(var(--radius) + 6px);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 230, 197, 0.25);
+  box-shadow:
+    0 0 24px rgba(243, 230, 197, 0.15),
+    0 12px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  width: 100%;
+  height: 500px;
+  margin-right: 0;
+
+}
+
+.media-frame.show {
+  display: block;
+}
+
+
+/* Médias */
+.media {
+  display: none;
+  width: 100%;
+  border-radius: var(--radius);
+  background: #0b0b0b;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(6px) scale(0.995);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.media.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+video.media {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo {
+  object-fit: contain;
+  /* sujet centré, pas rogné */
+  object-position: center;
+  aspect-ratio: 3 / 4;
+  /* mets 4/3 ou 16/9 si tes photos sont horizontales */
+  background: #0b0b0b;
+}
+
+/* Légende lumineuse sous média */
+.caption.glow {
+  margin-top: 12px;
+  font-size: var(--font-caption);
+  color: #ffffff;
+  opacity: 0.95;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.65),
+    0 0 22px rgba(243, 230, 197, 0.35),
+    0 2px 12px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.2px;
+}
+
+/* Secret (tapé) */
+.secret {
+  margin-top: 28px;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--accent2);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  white-space: pre-line;
+}
+
+.secret.show {
+  opacity: 1;
+}
+
+/* Horloge */
+.clock {
+  position: fixed;
+  left: env(safe-area-inset-left, 0px);
+  right: env(safe-area-inset-right, 0px);
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  font-size: clamp(0.9rem, 1.8vw, 1rem);
+  opacity: 0.65;
+  font-style: italic;
+  z-index: 1200;
+  pointer-events: none;
+}
+
+/* ===== Bouquet mélancolique ===== */
+.bouquet {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  display: none;
+}
+
+.bouquet.show {
+  display: block;
+}
+
+/* Vignette sombre + grain doux */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.25) 55%,
+      rgba(0, 0, 0, 0.55) 85%,
+      rgba(0, 0, 0, 0.75) 100%);
+  animation: vignettePulse 12s ease-in-out infinite;
+}
+
+@keyframes vignettePulse {
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0, rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 2px),
+    radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: auto, 3px 3px;
+  mix-blend-mode: soft-light;
+  animation: grainShift 2.2s steps(2) infinite;
+}
+
+@keyframes grainShift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(1px, -1px);
+  }
+}
+
+/* Canvas embers (brandons) */
+#embersCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Twinkles discrets */
+.twinkles {
+  position: absolute;
+  inset: 0;
+}
+
+.twinkle {
+  position: absolute;
+  color: var(--accent2);
+  text-shadow: 0 0 10px rgba(207, 199, 176, 0.65);
+  opacity: 0;
+  animation: twinkle 3.2s ease-in-out infinite;
+  font-size: clamp(10px, 1.8vw, 14px);
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== Responsive fins ===== */
+@media (max-width: 360px) {
+  :root {
+    --font-text: clamp(1rem, 4.2vw, 1.3rem);
+    --font-caption: clamp(0.92rem, 3.8vw, 1.06rem);
+  }
+
+  .container {
+    padding: 14px;
+  }
+
+  button#nextBtn {
+    padding-inline: 22px;
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  :root {
+    --font-text: clamp(1rem, 2.1vw, 1.25rem);
+    --pad-page-top: 32px;
+    --pad-page-bottom: 80px;
+  }
+
+  video.media {
+    aspect-ratio: 16 / 9;
+  }
+
+  .photo {
+    aspect-ratio: 4 / 3;
+  }
+
+  .caption {
+    margin-top: 8px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --maxw: 760px;
+  }
+}
+
+/* Accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .stars {
+    animation: none;
+  }
+
+  .text.show,
+  .text.fantasy {
+    animation: none;
+  }
+
+  .media.show {
+    transition: none;
+  }
+
+  .twinkle,
+  .grain,
+  .vignette {
+    animation: none;
+  }
+}
+
+/* Phrase finale persistante (unique définition) */
+.ending-line {
+  margin-top: 22px;
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  color: #ffffff;
+  opacity: 0;
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.60),
+    0 0 24px rgba(243, 230, 197, 0.35),
+    0 2px 14px rgba(0, 0, 0, 0.70);
+  letter-spacing: 0.25px;
+  transition: opacity 800ms ease;
+  white-space: pre-line;
+  position: relative;
+  z-index: 1100;
+}
+
+
+.ending-line.shimmer {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.7), rgba(243, 230, 197, 0.9), rgba(255, 255, 255, 0.7));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: endingShine 8s linear infinite;
+}
+
+@keyframes endingShine {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.ending-line.show {
+  opacity: 1;
+}

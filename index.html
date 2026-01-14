@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Pour toi 🤍</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+
+<body>
+
+  <!-- Audio : démarre après le premier clic -->
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="media/chris.mp3" type="audio/mpeg" />
+    Votre navigateur ne supporte pas l'élément audio.
+  </audio>
+
+  <!-- Fond d'étoiles global -->
+  <div class="stars" aria-hidden="true"></div>
+
+  <div class="container">
+    <div id="introStars" class="intro-stars" aria-hidden="true"></div>
+
+    <div id="text" class="text"></div>
+
+    <figure id="mediaFrame" class="media-frame">
+      <video id="video" class="media" playsinline controls>
+        <source src="christopher/video.mp4" type="video/mp4" />
+        Votre navigateur ne supporte pas la vidéo HTML5.
+      </video>
+
+      <img id="photo" class="media photo" src="" alt="Souvenir" />
+    </figure>
+
+    <figcaption id="caption" class="caption glow"></figcaption>
+
+    <button id="nextBtn">Continuer</button>
+
+    <div id="secret" class="secret"></div>
+    <div id="endingLine" class="ending-line" ></div>
+  </div>
+
+  <div id="clock" class="clock"></div>
+
+  <div id="bouquet" class="bouquet" aria-hidden="true">
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <canvas id="embersCanvas"></canvas>
+    <div id="twinkles" class="twinkles"></div>
+  </div>
+
+  <script src="script/script.js"></script>
+</body>
+
+</html>
